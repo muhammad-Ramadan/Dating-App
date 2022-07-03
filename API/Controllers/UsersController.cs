@@ -8,12 +8,11 @@ using Microsoft.Extensions.Logging;
 using API.Data;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         private readonly ILogger<UsersController> _logger;
         private readonly DataContext _dataContext;
@@ -23,13 +22,15 @@ namespace API.Controllers
             _logger = logger;
             _dataContext = dataContext;
         }
-
+        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             return await _dataContext.Users.ToListAsync();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
