@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
     return this.accountService.currentUser$.pipe(
       map(user => {
         if(user) return true;
+        //Mostafa ToDo: redirect to login page
         this.toastr.error('You shall not pass!');
       })
     );
